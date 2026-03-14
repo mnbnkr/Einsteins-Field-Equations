@@ -3,6 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A fully comprehensive, intuitive walkthrough of Einstein's Field Equations, general relativity, curvature, stress-energy, the Einstein-Hilbert action, and major predictions – written entirely in τ notation."
+    />
     <title>Einstein's Field Equations – A τ Walkthrough</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
@@ -11,6 +15,7 @@
     />
     <style>
       :root {
+        color-scheme: dark;
         --bg-deep: #0b0f18;
         --bg-card: #131a28;
         --bg-card-alt: #172035;
@@ -125,9 +130,17 @@
       }
 
       .nav-links a:hover,
-      .nav-links a.active {
+      .nav-links a.active,
+      .nav-links a:focus-visible {
         color: var(--accent-gold);
         background: var(--accent-gold-dim);
+      }
+
+      .nav-links a:focus-visible,
+      .tab-btn:focus-visible,
+      .demo-controls input[type="range"]:focus-visible {
+        outline: 2px solid var(--accent-gold);
+        outline-offset: 2px;
       }
 
       /* ═══ Layout ═══ */
@@ -189,7 +202,7 @@
       .hero-sub {
         font-size: 1.15rem;
         color: var(--text-secondary);
-        max-width: 540px;
+        max-width: 560px;
         line-height: 1.7;
         opacity: 0;
         animation: fadeUp 1s 0.9s forwards;
@@ -275,7 +288,8 @@
         margin: 2rem 0;
         text-align: center;
         position: relative;
-        overflow: hidden;
+        overflow-x: auto;
+        overflow-y: hidden;
       }
 
       .eq-block::before {
@@ -299,6 +313,7 @@
         color: var(--text-primary);
         letter-spacing: 0.02em;
         line-height: 2;
+        white-space: nowrap;
       }
 
       .eq-label {
@@ -461,6 +476,7 @@
 
       canvas.demo-canvas {
         width: 100%;
+        height: auto;
         border-radius: 6px;
         background: #0e1424;
         display: block;
@@ -606,6 +622,10 @@
         display: block;
       }
 
+      .tab-content[hidden] {
+        display: none !important;
+      }
+
       /* ═══ Separator ═══ */
       .sep {
         height: 1px;
@@ -692,6 +712,12 @@
       .reveal.visible {
         opacity: 1;
         transform: translateY(0);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
       }
 
       /* ═══ Responsive ═══ */
@@ -791,7 +817,7 @@
   <body>
     <canvas id="starfield"></canvas>
 
-    <nav id="mainNav">
+    <nav id="mainNav" aria-label="Section navigation">
       <div class="nav-brand">EFE · τ</div>
       <div class="nav-links">
         <a href="#foundation">Foundation</a>
@@ -810,8 +836,8 @@
         <h1>Einstein's Field Equations<br />in <em>τ</em></h1>
         <p class="hero-sub">
           An intuitive journey from flat spacetime to curved reality, told
-          entirely in Tau notation, where τ&nbsp;=&nbsp;2π represents one full
-          turn.
+          entirely in Tau notation, where τ represents one full turn – the
+          full-circle constant that makes a circle's circumference τr.
         </p>
         <div class="scroll-cue">
           Scroll to begin
@@ -837,17 +863,18 @@
             mathematical statement of that conversation.
           </p>
           <p>
-            Before Einstein, gravity was a force, a mysterious pull between
+            Before Einstein, gravity was a force – a mysterious pull between
             masses. After Einstein, gravity is <strong>geometry</strong>.
             Planets don't orbit the Sun because a force tugs them; they follow
-            the straightest possible paths through spacetime that the Sun's
+            the straightest available paths through spacetime that the Sun's
             energy has curved.
           </p>
           <p>
             This walkthrough will build the equation piece by piece, starting
             from the physical intuition and ending with real astrophysical
-            consequences. We use <strong>τ (tau) = 2π</strong> throughout, one
-            full turn of a circle, arguably the more natural constant.
+            consequences. We use <strong>τ (tau)</strong> throughout, taking τ
+            to mean one full turn of a circle – the full-circle constant, so a
+            circle's circumference is simply τr.
           </p>
         </div>
       </section>
@@ -860,11 +887,12 @@
           <span class="section-num">§1 – Foundation</span>
           <h2>From Special to General Relativity</h2>
 
-          <h3>Special Relativity: The Flat Stage</h3>
+          <h3>Special Relativity – The Flat Stage</h3>
           <p>
             In 1905, Einstein showed that space and time are woven into a single
-            fabric: <strong>spacetime</strong>. Special Relativity (SR) works on
-            a flat stage, no gravity, no acceleration. Its key insights:
+            fabric: <strong>spacetime</strong>. Special Relativity (SR) is built
+            on a flat spacetime stage – gravity is absent, and inertial motion
+            is the natural starting point. Its key insights:
           </p>
 
           <div class="card-grid">
@@ -872,21 +900,24 @@
               <span class="card-sym eq-highlight">c</span>
               <h4>Speed Limit</h4>
               <p>
-                The speed of light c is identical for every observer, no matter
+                The speed of light c is the same for every observer, no matter
                 how fast they move. Nothing with mass can reach it.
               </p>
             </div>
             <div class="card">
-              <span class="card-sym eq-blue">ds²</span>
+              <span class="card-sym eq-blue">ds<sup>2</sup></span>
               <h4>Spacetime Interval</h4>
               <p>
-                The "distance" between two events mixes space and time: ds² =
-                −c²dt² + dx² + dy² + dz². This interval is invariant; all
-                observers agree on it.
+                The "distance" between two events mixes space and time: ds<sup
+                  >2</sup
+                >
+                = −c<sup>2</sup>dt<sup>2</sup> + dx<sup>2</sup> + dy<sup>2</sup>
+                + dz<sup>2</sup>. This interval is invariant – all observers
+                agree on it.
               </p>
             </div>
             <div class="card">
-              <span class="card-sym eq-red">E = mc²</span>
+              <span class="card-sym eq-red">E = mc<sup>2</sup></span>
               <h4>Mass-Energy</h4>
               <p>
                 Mass is concentrated energy. This means energy, not just mass,
@@ -898,7 +929,7 @@
               <h4>Minkowski Metric</h4>
               <p>
                 Flat spacetime is described by the Minkowski metric, a "ruler"
-                that tells you how to measure intervals. It's the trivial case
+                that tells you how to measure intervals. It's the simplest case
                 of Einstein's general framework.
               </p>
             </div>
@@ -907,9 +938,10 @@
           <h3>The Elevator Thought Experiment</h3>
           <p>
             Einstein's leap came from the
-            <strong>equivalence principle</strong>: standing in a gravitational
-            field feels identical to accelerating in empty space. If you're in
-            an elevator with no windows, you cannot tell whether you're:
+            <strong>equivalence principle</strong>: locally, standing in a
+            gravitational field feels identical to accelerating in empty space.
+            If you're in a small sealed elevator with no windows, you cannot
+            tell, by local experiments alone, whether you're:
           </p>
 
           <div class="callout">
@@ -917,31 +949,35 @@
               <strong>A.</strong> Standing on Earth's surface, feeling gravity
               pull you down<br />
               <strong>B.</strong> In deep space, inside a rocket accelerating
-              upward at 9.8 m/s²
+              upward at 9.8 m/s<sup>2</sup>
             </p>
           </div>
 
           <p>
-            This isn't just a philosophical point; it's a deep physical
-            identity. It means gravity is not a "force" in the usual sense. It's
-            an <strong>effect of geometry</strong>. Objects in freefall feel no
-            gravity at all; they're following the natural curves of spacetime.
-            It's only when the floor pushes you up that you "feel" weight.
+            This isn't just a philosophical point – it's a deep local physical
+            identity. Strictly speaking, the equivalence is local: over a large
+            enough region, tidal effects reveal genuine spacetime curvature. But
+            at small scales, it tells us that gravity is not a "force" in the
+            usual sense. It's an <strong>effect of geometry</strong>. Objects in
+            freefall, locally and in the absence of noticeable tidal effects,
+            feel no gravity at all – they're following the natural curves of
+            spacetime. It's only when the floor pushes you up that you "feel"
+            weight.
           </p>
 
           <h3>From Flat to Curved</h3>
           <p>
             Special Relativity's flat metric η<sub>μν</sub> works perfectly when
-            there's no gravity. But the equivalence principle tells us that
-            gravity = curved spacetime. So we need to
-            <strong>generalise</strong> the metric to one that can curve:
+            gravity is absent. But the equivalence principle points toward the
+            deeper idea that gravity must be described by curved spacetime. So
+            we need to <strong>generalise</strong> the metric to one that can
+            curve:
           </p>
 
           <div class="eq-block">
             <div class="eq-main">
-              ds² = <span class="eq-highlight">g<sub>μν</sub></span> dx<sup
-                >μ</sup
-              >
+              ds<sup>2</sup> =
+              <span class="eq-highlight">g<sub>μν</sub></span> dx<sup>μ</sup>
               dx<sup>ν</sup>
             </div>
             <span class="eq-label"
@@ -953,7 +989,8 @@
             The metric tensor <strong>g<sub>μν</sub></strong> is now a field; it
             varies from point to point. Near a massive star, it deviates
             strongly from the flat Minkowski metric. Far from all matter, it
-            relaxes back to flat. This single object encodes all of gravity.
+            relaxes back toward flatness. This single object encodes all of
+            gravity.
           </p>
         </div>
       </section>
@@ -969,14 +1006,15 @@
           <p class="lead">
             To write an equation that says "curvature = energy," we need a
             precise vocabulary for curvature. This is the mathematical machinery
-            of <strong>Riemannian geometry</strong>.
+            of curved-spacetime geometry – more precisely, pseudo-Riemannian
+            geometry.
           </p>
 
           <h3>The Metric Tensor g<sub>μν</sub></h3>
           <p>
             Think of g<sub>μν</sub> as a
             <strong>field of rulers and protractors</strong> draped over
-            spacetime. At every point, it tells you: how to measure distances,
+            spacetime. At every point, it tells you how to measure distances,
             how to measure angles, and how clocks tick. In flat spacetime it
             reduces to the Minkowski metric diag(−1, 1, 1, 1). Near a mass, its
             components stretch and compress.
@@ -984,11 +1022,13 @@
 
           <h3>Geodesics – The Straightest Paths</h3>
           <p>
-            In flat space, the shortest path between two points is a straight
-            line. In curved spacetime, it's a <strong>geodesic</strong>.
-            Planets, photons, and falling apples all follow geodesics. They
-            aren't being "pulled"; they're following the straightest available
-            path through curved geometry.
+            In flat space, the straightest path between nearby points is a
+            straight line. In curved spacetime, the analogue is a
+            <strong>geodesic</strong> – more precisely, the straightest or
+            extremal path allowed by the geometry. Planets, photons, and falling
+            apples all follow geodesics when no non-gravitational force is
+            acting on them. They aren't being "pulled"; they're following the
+            straightest available path through curved geometry.
           </p>
 
           <div class="callout">
@@ -996,8 +1036,9 @@
               <strong>Analogy:</strong> Imagine two ants walking due north on a
               globe, starting from the equator at different longitudes. They
               walk in "straight lines" (great circles), yet they converge and
-              eventually meet at the pole. They aren't attracted to each other;
-              the surface's curvature brought them together. This is gravity.
+              eventually meet at the pole. They aren't attracted to each other –
+              the surface's curvature brought them together. This is the basic
+              geometric idea behind gravity.
             </p>
           </div>
 
@@ -1017,7 +1058,7 @@
                   Not a tensor, but a "connection." They describe how coordinate
                   basis vectors twist and turn from point to point. Computed
                   entirely from the metric and its first derivatives, they tell
-                  you how to take derivatives on a curved surface.
+                  you how to take derivatives on a curved space or spacetime.
                 </p>
               </div>
             </div>
@@ -1029,8 +1070,8 @@
                   The master curvature tensor. It measures exactly how much a
                   vector rotates when parallel-transported around an
                   infinitesimal closed loop. If all components are zero,
-                  spacetime is flat. It carries 20 independent components in 4D;
-                  gravity is rich.
+                  spacetime is flat. It carries 20 independent components in 4D
+                  – gravity is rich.
                 </p>
               </div>
             </div>
@@ -1040,11 +1081,12 @@
                 <h4>Ricci Tensor R<sub>μν</sub></h4>
                 <p>
                   A contraction (trace) of the Riemann tensor: R<sub>μν</sub> =
-                  R<sup>λ</sup><sub>μλν</sub>. This measures how volumes change:
-                  do nearby geodesics converge (positive curvature) or diverge
-                  (negative curvature)? It captures
-                  <strong>10 degrees of freedom</strong>, matching the metric's
-                  10 independent components.
+                  R<sup>λ</sup><sub>μλν</sub>. This measures how volumes and
+                  bundles of nearby geodesics change – do nearby freefalling
+                  paths converge (positive focusing) or diverge (negative
+                  focusing)? In four dimensions it too has
+                  <strong>10 independent components</strong> – the same raw
+                  count as a symmetric 4×4 metric tensor.
                 </p>
               </div>
             </div>
@@ -1054,9 +1096,9 @@
                 <h4>Ricci Scalar R</h4>
                 <p>
                   A further contraction: R = g<sup>μν</sup>R<sub>μν</sub>. One
-                  single number at each point that gives the overall "total
-                  curvature." Positive R means space tends to close in; negative
-                  R means it spreads out.
+                  single number at each point that gives a compressed measure of
+                  curvature. Positive R means geometry tends to focus; negative
+                  R means it tends to open out.
                 </p>
               </div>
             </div>
@@ -1066,10 +1108,11 @@
                 <h4>Einstein Tensor G<sub>μν</sub></h4>
                 <p>
                   The key combination: G<sub>μν</sub> = R<sub>μν</sub> −
-                  ½Rg<sub>μν</sub>. Why this particular combination? Because it
-                  is <strong>automatically divergence-free</strong>:
-                  ∇<sup>μ</sup>G<sub>μν</sub> = 0. This is essential; it
-                  guarantees that energy-momentum is conserved.
+                  &frac12; R g<sub>μν</sub>. Why this particular combination?
+                  Because it is <strong>automatically divergence-free</strong>:
+                  ∇<sup>μ</sup>G<sub>μν</sub> = 0. This is essential – it
+                  guarantees that the matter side of the theory can satisfy
+                  local energy-momentum conservation.
                 </p>
               </div>
             </div>
@@ -1084,15 +1127,22 @@
                 margin-bottom: 1rem;
               "
             >
-              Adjust mass to see how spacetime curvature distorts a grid of
-              geodesics. Higher mass creates a deeper curvature well.
+              Adjust mass to see how stronger curvature distorts a reference
+              grid around a central mass. Higher mass creates a deeper curvature
+              well. This is an intuition aid – real spacetime curvature is
+              four-dimensional and is not literally a 2D sheet.
             </p>
             <canvas
               class="demo-canvas"
               id="curvatureCanvas"
               width="760"
               height="380"
-            ></canvas>
+              role="img"
+              aria-label="Curvature visualisation showing a warped grid around a central mass"
+            >
+              Curvature visualisation showing a warped grid around a central
+              mass.
+            </canvas>
             <div class="demo-controls">
               <label
                 >Mass
@@ -1103,7 +1153,9 @@
                   max="100"
                   value="50"
                 />
-                <span class="demo-value" id="massValue">50</span></label
+                <span class="demo-value" id="massValue" aria-live="polite"
+                  >50</span
+                ></label
               >
               <label
                 >Grid Density
@@ -1114,7 +1166,9 @@
                   max="28"
                   value="16"
                 />
-                <span class="demo-value" id="gridValue">16</span></label
+                <span class="demo-value" id="gridValue" aria-live="polite"
+                  >16</span
+                ></label
               >
             </div>
           </div>
@@ -1130,21 +1184,22 @@
           <h2>Einstein's Field Equations</h2>
 
           <p class="lead">
-            Everything we've built, the metric, curvature tensors, and
-            energy-momentum, now comes together in a single, stunning equation.
+            Everything we've built – the metric, curvature tensors, and
+            energy-momentum – now comes together in a single, stunning equation.
           </p>
 
           <div class="eq-block" style="padding: 3rem 2rem">
             <div class="eq-main" style="font-size: clamp(1.3rem, 3vw, 1.8rem)">
               <span class="eq-highlight">G<sub>μν</sub></span> +
-              <span class="eq-purple">Λ g<sub>μν</sub></span> =
-              <span class="eq-blue">4τG</span> /
-              <span class="eq-red">c<sup>4</sup></span> ·
+              <span class="eq-purple">Λ g<sub>μν</sub></span> = (<span
+                class="eq-blue"
+                >4τG</span
+              >
+              / <span class="eq-red">c<sup>4</sup></span
+              >) ·
               <span class="eq-teal">T<sub>μν</sub></span>
             </div>
-            <span class="eq-label"
-              >Einstein's Field Equations – τ form (τ = 2π)</span
-            >
+            <span class="eq-label">Einstein's Field Equations – τ form</span>
           </div>
 
           <p>
@@ -1159,10 +1214,10 @@
               <span class="card-sym eq-highlight">G<sub>μν</sub></span>
               <h4>Einstein Tensor</h4>
               <p>
-                The left side. Encodes spacetime curvature: G<sub>μν</sub> =
-                R<sub>μν</sub> − ½Rg<sub>μν</sub>. Its divergence is
-                automatically zero, guaranteeing energy conservation on the
-                right side.
+                The left side – encodes spacetime curvature: G<sub>μν</sub> =
+                R<sub>μν</sub> − &frac12; R g<sub>μν</sub>. Its divergence is
+                automatically zero, guaranteeing local consistency with the
+                conservation laws on the right side.
               </p>
             </div>
             <div class="card">
@@ -1171,28 +1226,28 @@
               <p>
                 A uniform energy density of empty space itself. Einstein
                 originally added it to allow a static universe; today
-                Λ&nbsp;>&nbsp;0 drives the accelerating expansion we observe.
-                It's the energy of the vacuum.
+                Λ&nbsp;>&nbsp;0 is used to model the accelerating expansion we
+                observe. It's the energy of the vacuum.
               </p>
             </div>
             <div class="card">
               <span class="card-sym eq-teal">T<sub>μν</sub></span>
               <h4>Stress-Energy Tensor</h4>
               <p>
-                Everything non-gravitational: energy density, momentum flux,
-                pressure, and shear stress. Not just mass; heat, radiation, and
-                pressure all curve spacetime. This is the "matter tells space
-                how to curve" side.
+                Everything non-gravitational – energy density, momentum density,
+                momentum flux, pressure, and shear stress. Not just mass – heat,
+                radiation, and pressure all curve spacetime. This is the "matter
+                tells spacetime how to curve" side.
               </p>
             </div>
             <div class="card">
-              <span class="card-sym eq-blue">4τG/c⁴</span>
+              <span class="card-sym eq-blue">4τG/c<sup>4</sup></span>
               <h4>Coupling Constant (κ)</h4>
               <p>
                 Sets the strength of gravity. G is Newton's gravitational
-                constant, c is the speed of light. The τ and the factor of 4
-                arise from the geometry of 3D space and the tensor nature of GR.
-                More on this below.
+                constant, c is the speed of light. The factor 4τ reflects both
+                the geometry of 3D space and the relativistic tensor structure
+                of GR. More on this below.
               </p>
             </div>
           </div>
@@ -1200,97 +1255,114 @@
           <h3>The Stress-Energy Tensor – What's Inside?</h3>
           <p>
             T<sub>μν</sub> is a 4×4 symmetric tensor. Each component has a
-            direct physical meaning. The table below shows the components in a
-            given frame:
+            direct physical meaning. The table below shows the components, in a
+            chosen frame, in the form that is often easiest to read physically:
           </p>
 
           <div class="card-grid">
             <div class="card card-full">
               <div style="overflow-x: auto">
-                <table class="tensor-table">
-                  <tr>
-                    <td class="td-highlight">
-                      T<sup>00</sup><br /><span class="td-desc"
-                        >Energy density</span
-                      >
-                    </td>
-                    <td>
-                      T<sup>01</sup><br /><span class="td-desc"
-                        >Energy flux x</span
-                      >
-                    </td>
-                    <td>
-                      T<sup>02</sup><br /><span class="td-desc"
-                        >Energy flux y</span
-                      >
-                    </td>
-                    <td>
-                      T<sup>03</sup><br /><span class="td-desc"
-                        >Energy flux z</span
-                      >
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      T<sup>10</sup><br /><span class="td-desc"
-                        >Mom. density x</span
-                      >
-                    </td>
-                    <td class="td-blue">
-                      T<sup>11</sup><br /><span class="td-desc"
-                        >Pressure x</span
-                      >
-                    </td>
-                    <td>
-                      T<sup>12</sup><br /><span class="td-desc">Shear xy</span>
-                    </td>
-                    <td>
-                      T<sup>13</sup><br /><span class="td-desc">Shear xz</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      T<sup>20</sup><br /><span class="td-desc"
-                        >Mom. density y</span
-                      >
-                    </td>
-                    <td>
-                      T<sup>21</sup><br /><span class="td-desc">Shear yx</span>
-                    </td>
-                    <td class="td-blue">
-                      T<sup>22</sup><br /><span class="td-desc"
-                        >Pressure y</span
-                      >
-                    </td>
-                    <td>
-                      T<sup>23</sup><br /><span class="td-desc">Shear yz</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      T<sup>30</sup><br /><span class="td-desc"
-                        >Mom. density z</span
-                      >
-                    </td>
-                    <td>
-                      T<sup>31</sup><br /><span class="td-desc">Shear zx</span>
-                    </td>
-                    <td>
-                      T<sup>32</sup><br /><span class="td-desc">Shear zy</span>
-                    </td>
-                    <td class="td-blue">
-                      T<sup>33</sup><br /><span class="td-desc"
-                        >Pressure z</span
-                      >
-                    </td>
-                  </tr>
+                <table
+                  class="tensor-table"
+                  aria-label="Stress-energy tensor component overview"
+                >
+                  <tbody>
+                    <tr>
+                      <td class="td-highlight">
+                        T<sup>00</sup><br /><span class="td-desc"
+                          >Energy density</span
+                        >
+                      </td>
+                      <td>
+                        T<sup>01</sup><br /><span class="td-desc"
+                          >Energy flux x</span
+                        >
+                      </td>
+                      <td>
+                        T<sup>02</sup><br /><span class="td-desc"
+                          >Energy flux y</span
+                        >
+                      </td>
+                      <td>
+                        T<sup>03</sup><br /><span class="td-desc"
+                          >Energy flux z</span
+                        >
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        T<sup>10</sup><br /><span class="td-desc"
+                          >Mom. density x</span
+                        >
+                      </td>
+                      <td class="td-blue">
+                        T<sup>11</sup><br /><span class="td-desc"
+                          >Pressure x</span
+                        >
+                      </td>
+                      <td>
+                        T<sup>12</sup><br /><span class="td-desc"
+                          >Shear xy</span
+                        >
+                      </td>
+                      <td>
+                        T<sup>13</sup><br /><span class="td-desc"
+                          >Shear xz</span
+                        >
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        T<sup>20</sup><br /><span class="td-desc"
+                          >Mom. density y</span
+                        >
+                      </td>
+                      <td>
+                        T<sup>21</sup><br /><span class="td-desc"
+                          >Shear yx</span
+                        >
+                      </td>
+                      <td class="td-blue">
+                        T<sup>22</sup><br /><span class="td-desc"
+                          >Pressure y</span
+                        >
+                      </td>
+                      <td>
+                        T<sup>23</sup><br /><span class="td-desc"
+                          >Shear yz</span
+                        >
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        T<sup>30</sup><br /><span class="td-desc"
+                          >Mom. density z</span
+                        >
+                      </td>
+                      <td>
+                        T<sup>31</sup><br /><span class="td-desc"
+                          >Shear zx</span
+                        >
+                      </td>
+                      <td>
+                        T<sup>32</sup><br /><span class="td-desc"
+                          >Shear zy</span
+                        >
+                      </td>
+                      <td class="td-blue">
+                        T<sup>33</sup><br /><span class="td-desc"
+                          >Pressure z</span
+                        >
+                      </td>
+                    </tr>
+                  </tbody>
                 </table>
               </div>
               <p style="margin-top: 0.75rem; font-size: 0.9rem">
-                The diagonal tells the main story: energy density and three
+                The diagonal tells the main story – energy density and three
                 pressures. The off-diagonal elements describe momentum flow and
-                shear stresses. For a perfect fluid (like a star), only the
-                diagonal matters.
+                shear stresses. For a perfect fluid (like the matter inside a
+                simple star model), only the diagonal matters.
               </p>
               <div
                 class="callout callout-note"
@@ -1299,14 +1371,16 @@
                 <p style="font-size: 0.88rem">
                   <strong>Notation note:</strong> The table displays the
                   contravariant (upper-index) components T<sup>μν</sup>, which
-                  have the most intuitive physical readings. The field equations
-                  are often written with the covariant (lower-index) form
-                  T<sub>μν</sub>. In curved spacetime, these two forms differ by
-                  factors of the metric tensor: T<sub>μν</sub> =
-                  g<sub>μα</sub>g<sub>νβ</sub>T<sup>αβ</sup>. In flat
-                  (Minkowski) spacetime, however, they coincide up to signs, so
-                  this pedagogical shorthand is standard. Just remember that
-                  "raising and lowering indices" uses the metric.
+                  often have the most intuitive physical readings in a chosen
+                  frame. The field equations are often written with the
+                  covariant (lower-index) form T<sub>μν</sub>. In curved
+                  spacetime, these two forms differ by factors of the metric
+                  tensor: T<sub>μν</sub> =
+                  g<sub>μα</sub>g<sub>νβ</sub>T<sup>αβ</sup>. In a local
+                  inertial frame of flat (Minkowski) spacetime, the two forms
+                  correspond closely, differing mainly through the metric's sign
+                  conventions, so this pedagogical shorthand is standard. Just
+                  remember that "raising and lowering indices" uses the metric.
                 </p>
               </div>
             </div>
@@ -1318,7 +1392,7 @@
             <strong>10 independent components</strong>. Each one is a separate
             differential equation. They are coupled (changing one affects the
             others) and nonlinear (the curvature terms contain products of the
-            metric with itself). This is what makes GR so hard to solve and so
+            metric with itself). This is what makes GR so hard to solve – and so
             rich in phenomena.
           </p>
         </div>
@@ -1330,11 +1404,11 @@
       <section id="coupling">
         <div class="reveal">
           <span class="section-num">§4 – The Coupling Constant</span>
-          <h2>Where Does 4τG / c⁴ Come From?</h2>
+          <h2>Where Does 4τG / c<sup>4</sup> Come From?</h2>
 
           <p class="lead">
-            The coupling constant κ = 4τG/c⁴ is not a free parameter. It is
-            <strong>forced</strong> by demanding that Einstein's equation
+            The coupling constant κ = 4τG/c<sup>4</sup> is not a free parameter.
+            It is <strong>forced</strong> by demanding that Einstein's equation
             reduces to Newton's gravity in the weak, slow limit.
           </p>
 
@@ -1347,17 +1421,16 @@
 
           <div class="eq-block">
             <div class="eq-main">
-              ∇²Φ = <span class="eq-highlight">2τ</span>Gρ
+              ∇<sup>2</sup>Φ = <span class="eq-highlight">2τ</span>Gρ
             </div>
             <span class="eq-label"
-              >Poisson's equation – the Newtonian target (τ form)</span
+              >Poisson's equation – Newtonian gravity in τ form</span
             >
           </div>
 
           <p>
             Here Φ is the gravitational potential, ρ is mass density, and the
-            factor 2τ (= 4π in traditional notation) comes from the
-            <strong>geometry of 3D space</strong>.
+            factor 2τ comes from the <strong>geometry of 3D space</strong>.
           </p>
 
           <h3>Dissecting 4τ = (2τ) × 2</h3>
@@ -1378,8 +1451,8 @@
                 <p>
                   If you surround a point mass with a closed surface and apply
                   Gauss's divergence theorem, the total solid angle of a sphere
-                  in 3D is 2τ steradians (= 4π). This is purely geometric: it's
-                  the surface area of a unit sphere. It shows up in Coulomb's
+                  in 3D is 2τ steradians. This is purely geometric – it is the
+                  surface area of the unit 2-sphere. It shows up in Coulomb's
                   law, Newton's gravity, and any inverse-square law in 3D space.
                   It's the price of three spatial dimensions.
                 </p>
@@ -1399,14 +1472,15 @@
               <div class="flow-content">
                 <h4>The Relativistic Doubling</h4>
                 <p>
-                  In Newtonian gravity, only time is warped (clocks slow in a
-                  gravitational well). In GR,
-                  <strong>both space and time</strong> are curved. When you
-                  linearise the metric g₀₀ ≈ −(1 + 2Φ/c²) and compute the
-                  Einstein tensor, the tensor structure introduces an extra
-                  factor of 2. This factor reflects that pressure gravitates
-                  too: the full energy-momentum tensor contributes, not just
-                  mass.
+                  In a first weak-field guess, you might try to encode the
+                  Newtonian potential only in the time-time part of the metric,
+                  with g<sub>00</sub> ≈ −(1 + 2Φ/c<sup>2</sup>). But in GR the
+                  field equations tie that time-time curvature to spatial
+                  curvature as well. When you linearise the equations and match
+                  them to Poisson's equation, the tensor structure contributes
+                  an extra factor of 2. This is closely related to the fact that
+                  GR curves space as well as time, and in the full theory
+                  pressure and stress gravitate too.
                 </p>
               </div>
             </div>
@@ -1414,11 +1488,11 @@
 
           <div class="eq-block">
             <div class="eq-main">
-              κ = <span class="eq-highlight">4τ</span>G / c⁴ = (<span
+              κ = <span class="eq-highlight">4τ</span>G / c<sup>4</sup> = (<span
                 class="eq-blue"
                 >2τ</span
               >
-              × <span class="eq-red">2</span>) · G / c⁴
+              × <span class="eq-red">2</span>) · G / c<sup>4</sup>
             </div>
             <span class="eq-label"
               >Geometric factor × Relativistic factor × Physical constants</span
@@ -1428,22 +1502,25 @@
           <div class="callout">
             <p>
               <strong>Intuition:</strong> The 2τ says "we live in 3D." The ×2
-              says "this is a tensor theory, not a scalar one; space curves, not
-              just time." Together they give 4τ, the coupling that stitches
+              says "this is a tensor theory, not a scalar one – when relativity
+              is done properly, space as well as time responds to gravitating
+              matter." Together they give 4τ, the coupling that stitches
               Newtonian gravity into the fabric of Einstein's curved spacetime.
             </p>
           </div>
 
-          <h3>Why G and c⁴?</h3>
+          <h3>Why G and c<sup>4</sup>?</h3>
           <p>
             <strong>G</strong> (Newton's constant) sets the <em>strength</em> of
-            gravity. It's measured: G ≈ 6.674 × 10⁻¹¹ m³/(kg·s²). It tells you
-            how much curvature a given amount of mass-energy produces. The
-            smallness of G is why gravity is the weakest force.
+            gravity. It's measured: G ≈ 6.674 × 10<sup>−11</sup>
+            m<sup>3</sup>/(kg·s<sup>2</sup>). It tells you how much curvature a
+            given amount of mass-energy produces. The smallness of G is why
+            gravity is the weakest force.
           </p>
           <p>
-            <strong>c⁴</strong> in the denominator is an enormous number (≈ 8.1
-            × 10³³ m⁴/s⁴). It represents the stiffness of spacetime: it takes a
+            <strong>c<sup>4</sup></strong> in the denominator is an enormous
+            number (≈ 8.1 × 10<sup>33</sup> m<sup>4</sup>/s<sup>4</sup>). It
+            represents the stiffness of spacetime – it takes a
             <em>colossal</em> amount of energy to curve spacetime even slightly.
             This is why you need neutron stars and black holes to see dramatic
             GR effects.
@@ -1461,27 +1538,33 @@
 
           <p class="lead">
             Einstein didn't pull the equation from nowhere. There's a deeper
-            structure, the <strong>Einstein-Hilbert action</strong>, from which
-            the field equations arise naturally via the principle of least
-            action.
+            structure – the <strong>Einstein-Hilbert action</strong> – from
+            which the field equations arise naturally via the principle of
+            stationary action.
           </p>
 
           <div class="eq-block">
             <div class="eq-main">
-              S = ∫ ( <span class="eq-highlight">R − 2Λ</span> ) / (<span
-                class="eq-blue"
-                >4τ</span
-              >G/c⁴) · √(−g) · d⁴x +
+              S = (<span class="eq-blue">c<sup>4</sup></span> /
+              <span class="eq-highlight">8τG</span>) ∫ (
+              <span class="eq-highlight">R − 2Λ</span> ) √(−g) d<sup>4</sup>x +
               <span class="eq-teal">S<sub>matter</sub></span>
             </div>
             <span class="eq-label">Einstein-Hilbert action – τ form</span>
           </div>
 
           <p>
-            The principle is elegant: nature chooses the spacetime geometry that
-            <strong>extremises</strong> (makes stationary) this action. Varying
-            S with respect to the metric g<sub>μν</sub> produces exactly the
-            Einstein Field Equations.
+            The principle is elegant: nature chooses a spacetime geometry for
+            which this action is <strong>stationary</strong> under small
+            variations of the metric. Varying S with respect to the metric g<sub
+              >μν</sub
+            >
+            produces exactly the Einstein Field Equations.
+          </p>
+          <p>
+            In a fully careful treatment, one also adds a boundary term when the
+            spacetime region has an edge, but the central idea is already
+            visible in the expression above.
           </p>
 
           <div class="card-grid">
@@ -1489,9 +1572,9 @@
               <span class="card-sym eq-highlight">R</span>
               <h4>Ricci Scalar</h4>
               <p>
-                Total curvature at each point. This is the gravitational
-                "kinetic energy" term; it prefers flat spacetime unless matter
-                forces curvature.
+                A scalar summary of curvature at each point. This is the
+                gravitational "kinetic" term; left to itself, it prefers flat
+                spacetime unless matter forces curvature.
               </p>
             </div>
             <div class="card">
@@ -1507,7 +1590,7 @@
               <h4>Volume Element</h4>
               <p>
                 The square root of minus the determinant of the metric. It
-                ensures we're measuring volumes correctly in curved spacetime:
+                ensures we're measuring volumes correctly in curved spacetime –
                 an integral over curved space needs this correction factor.
               </p>
             </div>
@@ -1515,7 +1598,7 @@
               <span class="card-sym eq-teal">S<sub>matter</sub></span>
               <h4>Matter Action</h4>
               <p>
-                Describes all non-gravitational physics: electromagnetism,
+                Describes all non-gravitational physics – electromagnetism,
                 fluids, quantum fields. Its variation with respect to the metric
                 defines T<sub>μν</sub>.
               </p>
@@ -1525,11 +1608,11 @@
           <div class="callout-blue callout">
             <p>
               <strong>Why this matters:</strong> The action principle reveals
-              that the EFE are not arbitrary; they are the
-              <em>unique</em> second-order equations for a metric theory of
-              gravity that conserve energy-momentum. Hilbert derived them from
-              the action independently, just five days before Einstein found
-              them by physical reasoning.
+              that the EFE are not arbitrary. Under the usual assumptions for a
+              four-dimensional local metric theory, this is the natural
+              second-order curvature action to write down. Hilbert arrived at
+              the action formulation independently at almost the same time
+              Einstein reached the equations by physical reasoning.
             </p>
           </div>
         </div>
@@ -1550,51 +1633,112 @@
           </p>
 
           <div class="tabs">
-            <div class="tab-buttons">
-              <button class="tab-btn active" data-tab="schwarzschild">
+            <div
+              class="tab-buttons"
+              role="tablist"
+              aria-label="Solution categories"
+            >
+              <button
+                class="tab-btn active"
+                data-tab="schwarzschild"
+                id="tabbtn-schwarzschild"
+                role="tab"
+                aria-selected="true"
+                aria-controls="tab-schwarzschild"
+                tabindex="0"
+                type="button"
+              >
                 Black Holes
               </button>
-              <button class="tab-btn" data-tab="waves">Grav. Waves</button>
-              <button class="tab-btn" data-tab="cosmology">Cosmology</button>
-              <button class="tab-btn" data-tab="tests">Classic Tests</button>
+              <button
+                class="tab-btn"
+                data-tab="waves"
+                id="tabbtn-waves"
+                role="tab"
+                aria-selected="false"
+                aria-controls="tab-waves"
+                tabindex="-1"
+                type="button"
+              >
+                Grav. Waves
+              </button>
+              <button
+                class="tab-btn"
+                data-tab="cosmology"
+                id="tabbtn-cosmology"
+                role="tab"
+                aria-selected="false"
+                aria-controls="tab-cosmology"
+                tabindex="-1"
+                type="button"
+              >
+                Cosmology
+              </button>
+              <button
+                class="tab-btn"
+                data-tab="tests"
+                id="tabbtn-tests"
+                role="tab"
+                aria-selected="false"
+                aria-controls="tab-tests"
+                tabindex="-1"
+                type="button"
+              >
+                Classic Tests
+              </button>
             </div>
 
-            <div class="tab-content active" id="tab-schwarzschild">
+            <div
+              class="tab-content active"
+              id="tab-schwarzschild"
+              role="tabpanel"
+              aria-labelledby="tabbtn-schwarzschild"
+            >
               <h3>Schwarzschild Solution (1916)</h3>
               <p>
                 Karl Schwarzschild found the first exact solution just months
                 after Einstein published the EFE, for a single, non-rotating,
                 spherically symmetric mass in vacuum (T<sub>μν</sub> = 0
-                everywhere outside the mass). The result: a
-                <strong>curved geometry</strong> that predicts an event horizon
-                at the Schwarzschild radius:
+                everywhere outside the source). The result – a
+                <strong>curved geometry</strong> – predicts an event horizon at
+                the Schwarzschild radius:
               </p>
               <div class="eq-block">
-                <div class="eq-main">r<sub>s</sub> = 2GM / c²</div>
+                <div class="eq-main">r<sub>s</sub> = 2GM / c<sup>2</sup></div>
                 <span class="eq-label">Schwarzschild radius</span>
               </div>
               <p>
-                Below this radius, spacetime is so curved that all paths, even
-                light, lead inward. This is a <strong>black hole</strong>. Note
-                that τ doesn't appear here; this formula is pure Newton +
-                relativity, with no solid-angle geometry involved.
+                Below this radius, spacetime is so curved that all
+                future-directed paths, even those of light, lead inward. This is
+                a
+                <strong>black hole</strong>. Note that τ does not appear
+                explicitly here – the symmetry of the solution and the way the
+                constants combine have already absorbed the underlying geometric
+                factors.
               </p>
               <p>
                 The Schwarzschild metric also predicts gravitational time
-                dilation: clocks run slower closer to the mass. This has been
+                dilation – clocks run slower closer to the mass. This has been
                 confirmed with atomic clocks on aircraft, GPS satellites, and
                 more recently with clocks separated by just 1 mm of height.
               </p>
             </div>
 
-            <div class="tab-content" id="tab-waves">
+            <div
+              class="tab-content"
+              id="tab-waves"
+              role="tabpanel"
+              aria-labelledby="tabbtn-waves"
+              hidden
+            >
               <h3>Gravitational Waves</h3>
               <p>
-                Linearise the EFE around flat spacetime: g<sub>μν</sub> = η<sub
+                Linearise the EFE around flat spacetime by writing g<sub
                   >μν</sub
                 >
-                + h<sub>μν</sub> where h is a tiny perturbation. The equations
-                reduce to a <strong>wave equation</strong>:
+                = η<sub>μν</sub> + h<sub>μν</sub>, where h is a tiny
+                perturbation. In an appropriate gauge, the equations reduce to a
+                <strong>wave equation</strong>:
               </p>
               <div class="eq-block">
                 <div class="eq-main">
@@ -1603,29 +1747,35 @@
                     style="cursor: help"
                     >□</span
                   >
-                  h̄<sub>μν</sub> = −(<span class="eq-blue">4τ</span>G / c⁴)
-                  T<sub>μν</sub>
+                  h̄<sub>μν</sub> = −(<span class="eq-blue">8τ</span>G /
+                  c<sup>4</sup>) T<sub>μν</sub>
                 </div>
                 <span class="eq-label"
                   >Linearised EFE – gravitational wave equation</span
                 >
               </div>
               <p>
-                Ripples in spacetime itself, travelling at the speed of light.
-                Two merging black holes or neutron stars produce these waves. In
-                2015, LIGO detected them for the first time: the signal from two
-                black holes merging 1.3 billion light-years away matched GR's
-                predictions to extraordinary precision.
+                Ripples in spacetime itself – travelling at the speed of light
+                in vacuum. Two merging black holes or neutron stars produce
+                these waves. In 2015, LIGO detected them for the first time: the
+                signal from two black holes merging 1.3 billion light-years away
+                matched GR's predictions to extraordinary precision.
               </p>
               <p>
-                The 4τ coupling appears here too: it sets the wave amplitude.
-                The signal LIGO detected stretched and compressed the 4 km
-                detector arms by about 10⁻¹⁸ metres, a thousandth the width of a
-                proton, exactly as the EFE predicted.
+                The coupling constant scales up to 8τ here – it sets the wave
+                amplitude. The signal LIGO detected stretched and compressed the
+                4 km detector arms by about 10<sup>−18</sup> metres – roughly a
+                thousandth the width of a proton – exactly as the EFE predicted.
               </p>
             </div>
 
-            <div class="tab-content" id="tab-cosmology">
+            <div
+              class="tab-content"
+              id="tab-cosmology"
+              role="tabpanel"
+              aria-labelledby="tabbtn-cosmology"
+              hidden
+            >
               <h3>Friedmann Equations – The Universe's Evolution</h3>
               <p>
                 Apply the EFE to a universe that is homogeneous and isotropic
@@ -1635,14 +1785,16 @@
               </p>
               <div class="eq-block">
                 <div class="eq-main">
-                  (ȧ/a)² = (<span class="eq-blue">τ</span>G/3)ρ − kc²/a² + Λc²/3
+                  (ȧ/a)<sup>2</sup> = (<span class="eq-blue">4τ</span>G/3)ρ −
+                  kc<sup>2</sup>/a<sup>2</sup> + Λc<sup>2</sup>/3
                 </div>
                 <span class="eq-label">First Friedmann equation – τ form</span>
               </div>
               <p>
-                Here τG/3 = 8πG/6 (since τ = 2π). The Hubble parameter H = ȧ/a
-                measures expansion rate. This equation says the universe's
-                expansion is driven by energy density ρ, resisted by spatial
+                The coefficient 4τG/3 is the familiar Friedmann coupling written
+                in full-turn notation. The Hubble parameter H = ȧ/a measures the
+                expansion rate. This equation says the universe's expansion is
+                driven by energy density ρ, resisted or aided by spatial
                 curvature k, and accelerated by Λ.
               </p>
               <p>
@@ -1654,7 +1806,13 @@
               </p>
             </div>
 
-            <div class="tab-content" id="tab-tests">
+            <div
+              class="tab-content"
+              id="tab-tests"
+              role="tabpanel"
+              aria-labelledby="tabbtn-tests"
+              hidden
+            >
               <h3>Classic Experimental Tests</h3>
               <div class="timeline">
                 <div class="tl-item">
@@ -1662,7 +1820,7 @@
                   <h4>Mercury's Perihelion Precession</h4>
                   <p>
                     Mercury's orbit precesses by 43 arcseconds per century more
-                    than Newton predicts. GR explains this exactly; it was the
+                    than Newton predicts. GR explains this exactly – it was the
                     first triumph, and it made Einstein's heart race.
                   </p>
                 </div>
@@ -1670,10 +1828,10 @@
                   <div class="tl-year">1919</div>
                   <h4>Light Deflection by the Sun</h4>
                   <p>
-                    Eddington's solar eclipse expedition measured starlight
-                    bending around the Sun. GR predicted double Newton's value
-                    (because space curves too, not just time; that factor of 2
-                    again). The result matched GR.
+                    Eddington's solar eclipse expedition famously reported
+                    starlight bending around the Sun, catapulting Einstein to
+                    worldwide fame. Later radio and space-based measurements
+                    confirmed the GR value with far higher precision.
                   </p>
                 </div>
                 <div class="tl-item">
@@ -1682,7 +1840,7 @@
                   <p>
                     Pound and Rebka measured photons climbing against Earth's
                     gravity losing energy (shifting to red). The measured shift
-                    matched GR's prediction to 1%.
+                    matched GR's prediction to about 1%.
                   </p>
                 </div>
                 <div class="tl-item">
@@ -1690,7 +1848,7 @@
                   <h4>Hafele-Keating Experiment</h4>
                   <p>
                     Atomic clocks flown on commercial jets showed time dilation
-                    from both velocity (SR) and gravity (GR). Both effects
+                    from both velocity (SR) and gravity (GR). Both effects were
                     confirmed.
                   </p>
                 </div>
@@ -1709,7 +1867,8 @@
                   <p>
                     The Event Horizon Telescope captured the shadow of the
                     supermassive black hole in M87. The ring of light matched
-                    GR's predictions for photon orbits around a Kerr black hole.
+                    GR's predictions for photon orbits around a rotating black
+                    hole to striking accuracy.
                   </p>
                 </div>
               </div>
@@ -1725,17 +1884,24 @@
                 margin-bottom: 1rem;
               "
             >
-              Watch test particles follow geodesics around a Schwarzschild-like
+              Watch test particles follow Schwarzschild-like geodesics around a
               gravitational well. Adjust mass to see how the geometry changes
               orbits: higher mass means tighter curves, a larger event horizon,
-              and stronger orbital precession.
+              and stronger orbital precession. This is an intuition aid – the
+              exact GR geometry is richer, but the visual behaviour points in
+              the right direction.
             </p>
             <canvas
               class="demo-canvas"
               id="orbitCanvas"
               width="760"
               height="400"
-            ></canvas>
+              role="img"
+              aria-label="Orbit visualisation showing test particles moving around a black-hole-like gravitational well"
+            >
+              Orbit visualisation showing test particles moving around a
+              black-hole-like gravitational well.
+            </canvas>
             <div class="demo-controls">
               <label
                 >Central Mass
@@ -1746,7 +1912,9 @@
                   max="100"
                   value="50"
                 />
-                <span class="demo-value" id="bhMassValue">50</span></label
+                <span class="demo-value" id="bhMassValue" aria-live="polite"
+                  >50</span
+                ></label
               >
             </div>
           </div>
@@ -1772,8 +1940,8 @@
               <div class="flow-content">
                 <h4>Equivalence Principle</h4>
                 <p>
-                  Gravity is indistinguishable from acceleration, so gravity
-                  must be geometry, not a force.
+                  Gravity is locally indistinguishable from acceleration, so
+                  gravity must be geometry, not an ordinary force.
                 </p>
               </div>
             </div>
@@ -1793,7 +1961,8 @@
                 <h4>Curvature Tensors</h4>
                 <p>
                   Riemann → Ricci → Einstein tensor G<sub>μν</sub>. The unique
-                  divergence-free curvature object.
+                  divergence-free curvature combination used in the field
+                  equations.
                 </p>
               </div>
             </div>
@@ -1802,7 +1971,7 @@
               <div class="flow-content">
                 <h4>Energy-Momentum T<sub>μν</sub></h4>
                 <p>
-                  All forms of energy and momentum: mass, radiation, pressure,
+                  All forms of energy and momentum – mass, radiation, pressure,
                   stress.
                 </p>
               </div>
@@ -1810,7 +1979,7 @@
             <div class="flow-step">
               <div class="flow-num">5</div>
               <div class="flow-content">
-                <h4>Coupling: 4τG/c⁴</h4>
+                <h4>Coupling: 4τG/c<sup>4</sup></h4>
                 <p>
                   Determined by requiring consistency with Newton's gravity.
                   Encodes 3D geometry (2τ) and the tensor nature of GR (×2).
@@ -1822,8 +1991,9 @@
               <div class="flow-content">
                 <h4>The Equation</h4>
                 <p>
-                  G<sub>μν</sub> + Λg<sub>μν</sub> = (4τG/c⁴) T<sub>μν</sub>.
-                  Ten coupled nonlinear equations relating curvature to energy.
+                  G<sub>μν</sub> + Λg<sub>μν</sub> = (4τG/c<sup>4</sup>)
+                  T<sub>μν</sub>. Ten coupled nonlinear equations relating
+                  curvature to energy.
                 </p>
               </div>
             </div>
@@ -1833,7 +2003,7 @@
                 <h4>Solve and Predict</h4>
                 <p>
                   Black holes, gravitational waves, expanding universe, GPS
-                  corrections, gravitational lensing: all consequences of this
+                  corrections, gravitational lensing – all consequences of this
                   one equation.
                 </p>
               </div>
@@ -1859,49 +2029,58 @@
                 class="eq-blue"
                 >4τG</span
               >
-              / <span class="eq-red">c⁴</span>)
+              / <span class="eq-red">c<sup>4</sup></span
+              >)
               <span class="eq-teal">T<sub>μν</sub></span>
             </div>
-            <span class="eq-label">Where τ = 2π – one full turn</span>
+            <span class="eq-label"
+              >Where τ denotes one full turn – the full-circle constant</span
+            >
           </div>
 
           <h3>What We Still Don't Know</h3>
           <p>
-            The EFE are a <strong>classical</strong> theory; they don't include
+            The EFE are a <strong>classical</strong> theory – they don't include
             quantum mechanics. At the singularity inside a black hole or at the
             Big Bang, quantum effects dominate and GR breaks down. Reconciling
-            GR with quantum mechanics, a theory of
-            <strong>quantum gravity</strong>, remains the great open problem of
+            GR with quantum mechanics – a theory of
+            <strong>quantum gravity</strong> – remains the great open problem of
             fundamental physics.
           </p>
           <p>
             The cosmological constant Λ is measured to be absurdly small but
-            nonzero. Quantum field theory predicts a vacuum energy roughly 10¹²⁰
+            nonzero. Quantum field theory predicts a vacuum energy roughly
+            10<sup>120</sup>
             times larger than what we observe. This "cosmological constant
             problem" is arguably the worst prediction in all of physics.
           </p>
           <p>
-            And yet: within its domain, the Einstein Field Equations remain the
-            most precisely tested and most beautiful theory we have. Every
-            prediction, from Mercury's orbit to LIGO's chirps, has been
-            confirmed. The geometry of spacetime is real, and τ, not a
-            mysterious force, governs how the cosmos moves.
+            And yet – within its domain, the Einstein Field Equations remain the
+            most precisely tested and most beautiful theory we have. Every major
+            prediction – from Mercury's orbit to LIGO's chirps – has been
+            confirmed. The geometry of spacetime is real, and it is geometry –
+            not a mysterious force – that governs how the cosmos moves. In this
+            walkthrough, we have written that story entirely in τ notation.
           </p>
         </div>
       </section>
 
       <footer>
-        <p>G<sub>μν</sub> + Λg<sub>μν</sub> = (4τG/c⁴) T<sub>μν</sub></p>
-        <p style="margin-top: 0.5rem">τ = 2π · Where geometry meets reality</p>
+        <p>
+          G<sub>μν</sub> + Λg<sub>μν</sub> = (4τG/c<sup>4</sup>) T<sub>μν</sub>
+        </p>
+        <p style="margin-top: 0.5rem">
+          τ – the full-turn constant · Where geometry meets reality
+        </p>
       </footer>
     </div>
     <!-- /container -->
 
     <script>
       // ═══════════════════════════════════════════════════════════════════
-      // τ (tau) constant
+      // τ (tau) – one full turn in radians
       // ═══════════════════════════════════════════════════════════════════
-      const TAU = 2 * Math.PI;
+      const TAU = 6.283185307179586;
 
       // ═══════════════════════════════════════════════════════════════════
       // Detect reduced-motion preference and mobile
@@ -1920,15 +2099,20 @@
         let w,
           h,
           stars = [];
-        const STAR_COUNT = isMobile ? 120 : 220;
+        let t = 0;
+
+        function getStarCount() {
+          return window.innerWidth < 700 ? 120 : 220;
+        }
 
         function resize() {
           w = c.width = window.innerWidth;
           h = c.height = window.innerHeight;
         }
+
         function init() {
           resize();
-          stars = Array.from({ length: STAR_COUNT }, () => ({
+          stars = Array.from({ length: getStarCount() }, () => ({
             x: Math.random() * w,
             y: Math.random() * h,
             r: Math.random() * 1.2 + 0.3,
@@ -1937,38 +2121,38 @@
             phase: Math.random() * TAU,
           }));
         }
-        let t = 0;
-        function draw() {
+
+        function renderFrame() {
           ctx.clearRect(0, 0, w, h);
-          t += 0.005;
           for (const s of stars) {
-            const flicker = 0.5 + 0.5 * Math.sin(t * s.speed * 20 + s.phase);
+            const flicker = prefersReducedMotion
+              ? 0.7
+              : 0.5 + 0.5 * Math.sin(t * s.speed * 20 + s.phase);
             ctx.beginPath();
             ctx.arc(s.x, s.y, s.r, 0, TAU);
             ctx.fillStyle = `rgba(212,175,90,${s.a * flicker})`;
             ctx.fill();
           }
+        }
+
+        function draw() {
+          t += 0.005;
+          renderFrame();
           requestAnimationFrame(draw);
         }
+
         let resizeTimeout;
         window.addEventListener("resize", () => {
           clearTimeout(resizeTimeout);
           resizeTimeout = setTimeout(() => {
-            resize();
             init();
+            renderFrame();
           }, 150);
         });
+
         init();
         if (!prefersReducedMotion) draw();
-        else {
-          // Static render for reduced-motion
-          for (const s of stars) {
-            ctx.beginPath();
-            ctx.arc(s.x, s.y, s.r, 0, TAU);
-            ctx.fillStyle = `rgba(212,175,90,${s.a * 0.7})`;
-            ctx.fill();
-          }
-        }
+        else renderFrame();
       })();
 
       // ═══════════════════════════════════════════════════════════════════
@@ -1977,6 +2161,7 @@
       const nav = document.getElementById("mainNav");
       let lastScrollY = 0;
       let ticking = false;
+
       window.addEventListener(
         "scroll",
         () => {
@@ -1992,24 +2177,36 @@
         { passive: true },
       );
 
-      // Active nav link
-      const sections = document.querySelectorAll("section[id]");
-      const navLinks = document.querySelectorAll(".nav-links a");
+      // Active nav link – only for sections that actually appear in the nav
+      const navLinks = Array.from(document.querySelectorAll(".nav-links a"));
+      const navSections = navLinks
+        .map((link) => document.querySelector(link.getAttribute("href")))
+        .filter(Boolean);
+
+      function setActiveNavLink(activeLink) {
+        navLinks.forEach((link) => {
+          const isActive = link === activeLink;
+          link.classList.toggle("active", isActive);
+          if (isActive) link.setAttribute("aria-current", "page");
+          else link.removeAttribute("aria-current");
+        });
+      }
+
       const observer = new IntersectionObserver(
         (entries) => {
-          entries.forEach((e) => {
-            if (e.isIntersecting) {
-              navLinks.forEach((l) => l.classList.remove("active"));
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
               const link = document.querySelector(
-                `.nav-links a[href="#${e.target.id}"]`,
+                `.nav-links a[href="#${entry.target.id}"]`,
               );
-              if (link) link.classList.add("active");
+              if (link) setActiveNavLink(link);
             }
           });
         },
         { rootMargin: "-40% 0px -55% 0px" },
       );
-      sections.forEach((s) => observer.observe(s));
+
+      navSections.forEach((section) => observer.observe(section));
 
       // ═══════════════════════════════════════════════════════════════════
       // REVEAL ON SCROLL
@@ -2033,26 +2230,53 @@
       }
 
       // ═══════════════════════════════════════════════════════════════════
-      // TABS
+      // TABS – with accessible roles and keyboard support
       // ═══════════════════════════════════════════════════════════════════
-      document.querySelectorAll(".tab-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const parent = btn.closest(".tabs");
-          parent
-            .querySelectorAll(".tab-btn")
-            .forEach((b) => b.classList.remove("active"));
-          parent
-            .querySelectorAll(".tab-content")
-            .forEach((c) => c.classList.remove("active"));
-          btn.classList.add("active");
-          document
-            .getElementById("tab-" + btn.dataset.tab)
-            .classList.add("active");
+      document.querySelectorAll(".tabs").forEach((tabsRoot) => {
+        const buttons = Array.from(tabsRoot.querySelectorAll(".tab-btn"));
+        const panels = Array.from(tabsRoot.querySelectorAll(".tab-content"));
+
+        function activateTab(targetButton, moveFocus = false) {
+          buttons.forEach((button) => {
+            const isActive = button === targetButton;
+            button.classList.toggle("active", isActive);
+            button.setAttribute("aria-selected", String(isActive));
+            button.setAttribute("tabindex", isActive ? "0" : "-1");
+          });
+
+          panels.forEach((panel) => {
+            const isActive = panel.id === "tab-" + targetButton.dataset.tab;
+            panel.classList.toggle("active", isActive);
+            if (isActive) panel.removeAttribute("hidden");
+            else panel.setAttribute("hidden", "");
+          });
+
+          if (moveFocus) targetButton.focus();
+        }
+
+        buttons.forEach((button, index) => {
+          button.addEventListener("click", () => activateTab(button));
+
+          button.addEventListener("keydown", (event) => {
+            let nextIndex = null;
+
+            if (event.key === "ArrowRight")
+              nextIndex = (index + 1) % buttons.length;
+            if (event.key === "ArrowLeft")
+              nextIndex = (index - 1 + buttons.length) % buttons.length;
+            if (event.key === "Home") nextIndex = 0;
+            if (event.key === "End") nextIndex = buttons.length - 1;
+
+            if (nextIndex !== null) {
+              event.preventDefault();
+              activateTab(buttons[nextIndex], true);
+            }
+          });
         });
       });
 
       // ═══════════════════════════════════════════════════════════════════
-      // CURVATURE VISUALIZATION – Fixed: no more inverse fold-through
+      // CURVATURE VISUALIZATION – fixed clamping, clearer behaviour
       // ═══════════════════════════════════════════════════════════════════
       (() => {
         const canvas = document.getElementById("curvatureCanvas");
@@ -2089,14 +2313,11 @@
           const cxC = W / 2,
             cyC = H / 2;
           const strength = mass * 40;
-          const steps = gridN * 3; // more points per line for smoothness
+          const steps = gridN * 3;
 
-          // Minimum approach radius – prevents lines from folding through center.
-          // This is the core fix: grid lines are clamped so they can never
-          // cross closer than this radius, eliminating the "inverse" artifacts.
+          // Minimum approach radius – prevents fold-through at the centre
           const minRadius = 8 + mass * 0.2;
 
-          // Warp function: smooth gravitational well distortion with clamped displacement
           function warp(x, y) {
             const dx = x - cxC,
               dy = y - cyC;
@@ -2106,11 +2327,7 @@
             const pull = strength / (dist + 12);
             const falloff = Math.exp((-dist * dist) / (300 * 300));
 
-            // Raw displacement towards center
             let displacement = pull * falloff;
-
-            // Clamp: displacement must never exceed (dist - minRadius)
-            // so the warped point never crosses the minimum approach radius
             const maxDisplacement = Math.max(0, dist - minRadius);
             displacement = Math.min(displacement, maxDisplacement);
 
@@ -2124,7 +2341,7 @@
 
           ctx.lineWidth = 0.9;
 
-          // Draw horizontal warped lines
+          // Horizontal warped lines
           for (let i = 0; i <= gridN; i++) {
             ctx.beginPath();
             let started = false;
@@ -2135,9 +2352,10 @@
               if (!started) {
                 ctx.moveTo(wp.x, wp.y);
                 started = true;
-              } else ctx.lineTo(wp.x, wp.y);
+              } else {
+                ctx.lineTo(wp.x, wp.y);
+              }
             }
-            // Distance-based colouring: brighter near center
             const midY = (i / gridN) * H;
             const distToCenter = Math.abs(midY - cyC);
             const alpha = 0.15 + 0.22 * Math.max(0, 1 - distToCenter / 200);
@@ -2145,7 +2363,7 @@
             ctx.stroke();
           }
 
-          // Draw vertical warped lines
+          // Vertical warped lines
           const vLines = gridN * 2;
           for (let j = 0; j <= vLines; j++) {
             ctx.beginPath();
@@ -2157,7 +2375,9 @@
               if (!started) {
                 ctx.moveTo(wp.x, wp.y);
                 started = true;
-              } else ctx.lineTo(wp.x, wp.y);
+              } else {
+                ctx.lineTo(wp.x, wp.y);
+              }
             }
             const midX = (j / vLines) * W;
             const distToCenter = Math.abs(midX - cxC);
@@ -2183,6 +2403,7 @@
           ctx.beginPath();
           ctx.arc(cxC, cyC, glowR * 5, 0, TAU);
           ctx.fill();
+
           ctx.fillStyle = "#d4af5a";
           ctx.beginPath();
           ctx.arc(cxC, cyC, glowR, 0, TAU);
@@ -2196,8 +2417,7 @@
 
       // ═══════════════════════════════════════════════════════════════════
       // GEODESIC ORBIT SIMULATION
-      // Proper gravitational physics with visible curvature, GR precession
-      // correction, and mass-responsive behaviour.
+      // Schwarzschild-inspired motion with visible curvature and precession
       // ═══════════════════════════════════════════════════════════════════
       (() => {
         const canvas = document.getElementById("orbitCanvas");
@@ -2214,105 +2434,13 @@
           return mass * 0.4 + 5;
         }
 
-        class Particle {
-          constructor() {
-            this.reset();
-          }
-          reset() {
-            const mass = +slider.value;
-            const rs = getRS(mass);
-            const GM = mass * 15;
-
-            // Start at a safe orbital distance
-            const minR = rs * 3 + 20;
-            const maxR = rs * 3 + 100;
-            const r = minR + Math.random() * (maxR - minR);
-            const angle = Math.random() * TAU;
-
-            this.x = cx + Math.cos(angle) * r;
-            this.y = cy + Math.sin(angle) * r;
-
-            // Compute velocity for approximate circular orbit, then perturb
-            const vCirc = Math.sqrt(GM / r);
-            const speedFactor = 0.6 + Math.random() * 0.6;
-            const speed = vCirc * speedFactor;
-
-            // Tangential direction (perpendicular to radius)
-            const dir = Math.random() > 0.25 ? 1 : -1;
-            const tangent = angle + (TAU / 4) * dir;
-
-            // Add slight radial perturbation for elliptical orbits
-            const radialKick = (Math.random() - 0.5) * vCirc * 0.15;
-
-            this.vx = Math.cos(tangent) * speed + Math.cos(angle) * radialKick;
-            this.vy = Math.sin(tangent) * speed + Math.sin(angle) * radialKick;
-
-            this.trail = [];
-            this.maxTrail = 140;
-            this.age = 0;
-            this.maxAge = 1000 + Math.random() * 800;
-            // Warm colour palette: golds, oranges, warm whites
-            this.hue = 25 + Math.random() * 35;
-            this.sat = 50 + Math.random() * 35;
-            this.lit = 55 + Math.random() * 25;
-          }
-        }
-
-        const PARTICLE_COUNT = isMobile ? 12 : 20;
-        const particles = Array.from(
-          { length: PARTICLE_COUNT },
-          () => new Particle(),
-        );
-
-        function step(p, GM, rs, dt) {
-          const dx = cx - p.x;
-          const dy = cy - p.y;
-          const distSq = dx * dx + dy * dy;
-          const dist = Math.sqrt(distSq);
-          if (dist < 0.5) return;
-
-          const nx = dx / dist;
-          const ny = dy / dist;
-
-          // Newtonian gravitational acceleration: a = GM/r²
-          const aGrav = GM / distSq;
-
-          // GR precession correction: adds an effective 1/r⁴ attractive term
-          // In Schwarzschild geometry: a_eff = GM/r² x (1 + 3*rs²/r²)
-          // This causes orbital precession (Mercury-like) and unstable close orbits
-          const grCorrection = 1 + (3 * (rs * rs)) / distSq;
-
-          const ax = nx * aGrav * grCorrection;
-          const ay = ny * aGrav * grCorrection;
-
-          // Leapfrog-style integration
-          p.vx += ax * dt;
-          p.vy += ay * dt;
-
-          // Speed limiter for numerical stability
-          const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
-          const maxSpeed = 14;
-          if (speed > maxSpeed) {
-            const scale = maxSpeed / speed;
-            p.vx *= scale;
-            p.vy *= scale;
-          }
-
-          p.x += p.vx * dt;
-          p.y += p.vy * dt;
-        }
-
-        function render() {
-          const mass = +slider.value;
-          valSpan.textContent = mass;
-          const GM = mass * 15;
-          const rs = getRS(mass);
-
-          // Semi-transparent background for trail persistence
-          ctx.fillStyle = "rgba(14,20,36,0.1)";
+        function fillBackground(alpha = 1) {
+          ctx.fillStyle = `rgba(14,20,36,${alpha})`;
           ctx.fillRect(0, 0, W, H);
+        }
 
-          // Background glow rings (accretion disk hint)
+        function drawBlackHoleBase(rs) {
+          // Background glow rings
           const diskOuter = rs * 3;
           const diskGrad = ctx.createRadialGradient(
             cx,
@@ -2330,7 +2458,7 @@
           ctx.arc(cx, cy, diskOuter, 0, TAU);
           ctx.fill();
 
-          // Event horizon (black disk)
+          // Event horizon
           ctx.beginPath();
           ctx.arc(cx, cy, rs, 0, TAU);
           ctx.fillStyle = "#050a14";
@@ -2354,7 +2482,7 @@
           ctx.arc(cx, cy, rs + 15, 0, TAU);
           ctx.fill();
 
-          // Photon sphere ring (dashed, at 1.5 rs)
+          // Photon sphere
           const photonR = rs * 1.5;
           ctx.beginPath();
           ctx.arc(cx, cy, photonR, 0, TAU);
@@ -2362,9 +2490,8 @@
           ctx.lineWidth = 0.5;
           ctx.setLineDash([3, 5]);
           ctx.stroke();
-          ctx.setLineDash([]);
 
-          // Innermost Stable Circular Orbit hint (3 rs)
+          // ISCO hint
           const iscoR = rs * 3;
           ctx.beginPath();
           ctx.arc(cx, cy, iscoR, 0, TAU);
@@ -2373,10 +2500,141 @@
           ctx.setLineDash([6, 8]);
           ctx.stroke();
           ctx.setLineDash([]);
+        }
 
-          // Update and draw particles
+        function drawOrbitLabels(rs, GM, note = "") {
+          ctx.font = '11px "JetBrains Mono", monospace';
+          ctx.fillStyle = "rgba(212,175,90,0.3)";
+          ctx.textAlign = "left";
+          ctx.fillText(
+            "r\u209B = " + rs.toFixed(1) + "  GM = " + GM.toFixed(0),
+            10,
+            18,
+          );
+
+          if (note) {
+            ctx.font = '12px "JetBrains Mono", monospace';
+            ctx.fillStyle = "rgba(212,175,90,0.45)";
+            ctx.textAlign = "center";
+            ctx.fillText(note, W / 2, H - 16);
+          }
+        }
+
+        class Particle {
+          constructor() {
+            this.reset();
+          }
+
+          reset() {
+            const mass = +slider.value;
+            const rs = getRS(mass);
+            const GM = mass * 15;
+
+            const minR = rs * 3 + 20;
+            const maxR = rs * 3 + 100;
+            const r = minR + Math.random() * (maxR - minR);
+            const angle = Math.random() * TAU;
+
+            this.x = cx + Math.cos(angle) * r;
+            this.y = cy + Math.sin(angle) * r;
+
+            const vCirc = Math.sqrt(GM / r);
+            const speedFactor = 0.6 + Math.random() * 0.6;
+            const speed = vCirc * speedFactor;
+
+            const dir = Math.random() > 0.25 ? 1 : -1;
+            const tangent = angle + (TAU / 4) * dir;
+
+            const radialKick = (Math.random() - 0.5) * vCirc * 0.15;
+
+            this.vx = Math.cos(tangent) * speed + Math.cos(angle) * radialKick;
+            this.vy = Math.sin(tangent) * speed + Math.sin(angle) * radialKick;
+
+            this.trail = [];
+            this.maxTrail = 140;
+            this.age = 0;
+            this.maxAge = 1000 + Math.random() * 800;
+            this.hue = 25 + Math.random() * 35;
+            this.sat = 50 + Math.random() * 35;
+            this.lit = 55 + Math.random() * 25;
+          }
+        }
+
+        const PARTICLE_COUNT = isMobile ? 12 : 20;
+        const particles = Array.from(
+          { length: PARTICLE_COUNT },
+          () => new Particle(),
+        );
+
+        function step(p, GM, rs, dt) {
+          const dx = cx - p.x;
+          const dy = cy - p.y;
+          const distSq = dx * dx + dy * dy;
+          const dist = Math.sqrt(distSq);
+          if (dist < 0.5) return;
+
+          const nx = dx / dist;
+          const ny = dy / dist;
+
+          // Newtonian attraction
+          const aGrav = GM / distSq;
+
+          // Simple GR-inspired precession correction
+          const grCorrection = 1 + (3 * (rs * rs)) / distSq;
+
+          const ax = nx * aGrav * grCorrection;
+          const ay = ny * aGrav * grCorrection;
+
+          p.vx += ax * dt;
+          p.vy += ay * dt;
+
+          const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+          const maxSpeed = 14;
+          if (speed > maxSpeed) {
+            const scale = maxSpeed / speed;
+            p.vx *= scale;
+            p.vy *= scale;
+          }
+
+          p.x += p.vx * dt;
+          p.y += p.vy * dt;
+        }
+
+        function drawStaticScene() {
+          const mass = +slider.value;
+          valSpan.textContent = mass;
+          const GM = mass * 15;
+          const rs = getRS(mass);
+
+          fillBackground(1);
+          drawBlackHoleBase(rs);
+          drawOrbitLabels(rs, GM, "Motion reduced by system preference");
+        }
+
+        function resetParticles() {
+          fillBackground(1);
+          particles.forEach((p) => p.reset());
+        }
+
+        slider.addEventListener("input", () => {
+          valSpan.textContent = slider.value;
+          if (prefersReducedMotion) {
+            drawStaticScene();
+          } else {
+            resetParticles();
+          }
+        });
+
+        function render() {
+          const mass = +slider.value;
+          valSpan.textContent = mass;
+          const GM = mass * 15;
+          const rs = getRS(mass);
+
+          fillBackground(0.1);
+          drawBlackHoleBase(rs);
+
           for (const p of particles) {
-            // Sub-steps for numerical stability
             const subSteps = 5;
             const dt = 1 / subSteps;
             for (let s = 0; s < subSteps; s++) {
@@ -2387,7 +2645,6 @@
             if (p.trail.length > p.maxTrail) p.trail.shift();
             p.age++;
 
-            // Draw trail with widening and brightening towards head
             if (p.trail.length > 2) {
               for (let i = 2; i < p.trail.length; i++) {
                 const progress = i / p.trail.length;
@@ -2402,7 +2659,6 @@
               }
             }
 
-            // Particle head glow
             const gGrad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 7);
             gGrad.addColorStop(
               0,
@@ -2414,13 +2670,11 @@
             ctx.fillStyle = gGrad;
             ctx.fill();
 
-            // Bright core dot
             ctx.beginPath();
             ctx.arc(p.x, p.y, 2.2, 0, TAU);
             ctx.fillStyle = `hsl(${p.hue},${Math.min(100, p.sat + 20)}%,${Math.min(95, p.lit + 25)}%)`;
             ctx.fill();
 
-            // Reset conditions
             const pdx = p.x - cx,
               pdy = p.y - cy;
             const pDist = Math.sqrt(pdx * pdx + pdy * pdy);
@@ -2436,33 +2690,15 @@
             }
           }
 
-          // Labels
-          ctx.font = '11px "JetBrains Mono", monospace';
-          ctx.fillStyle = "rgba(212,175,90,0.3)";
-          ctx.textAlign = "left";
-          ctx.fillText(
-            "r\u209B = " + rs.toFixed(1) + "  GM = " + GM.toFixed(0),
-            10,
-            18,
-          );
-
+          drawOrbitLabels(rs, GM);
           requestAnimationFrame(render);
         }
 
         if (!prefersReducedMotion) {
+          fillBackground(1);
           requestAnimationFrame(render);
         } else {
-          // Single frame for reduced-motion
-          ctx.fillStyle = "#0e1424";
-          ctx.fillRect(0, 0, W, H);
-          ctx.font = '13px "JetBrains Mono", monospace';
-          ctx.fillStyle = "rgba(212,175,90,0.5)";
-          ctx.textAlign = "center";
-          ctx.fillText(
-            "Orbit simulation (enable motion to animate)",
-            W / 2,
-            H / 2,
-          );
+          drawStaticScene();
         }
       })();
     </script>
